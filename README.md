@@ -1,4 +1,4 @@
-# Wine Analysis dataset
+# Wine dataset analysis
 
 This repository is part of "Tipología i cicle de vida de les dades" subject of the master degree in Data Science.
 The objective of this assignment is to clean and analyze any dataset found online. In this project the chosen dataset is the __Wine dataset__ available at the [UCI Machine Learing Repository](https://archive.ics.uci.edu/ml/datasets/wine).
