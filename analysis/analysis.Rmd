@@ -648,6 +648,20 @@ print(100*sum(predicted_model == wine.sample@test_type) / length(predicted_model
 
 En aquest cas l'algorisme ha aconseguit un resultat molt bo amb una precisió del 96.30 %.
 
+# Exportació de les dades
+
+Finalment escriurem les dades que tenim en el dataset en un fitxer CSV. Hi afegirem els valors obtinguts de cada algorsimes de classificació juntament amb la classificació original en els casos dels algorismes no supervisats.
+
+```{r}
+# Afegim els tipus
+wine$type <- wine_types
+wine$kmeans_clusters <- kmeans3_wine$cluster
+wine$hac <- cutree(hac, 3)
+
+# Exportació de les dades
+write.csv(wine, "../data/wine_out.csv")
+```
+
 # Conclusions
 
 En aquesta segona pràctica hem pogut treballar la càrrega, neteja i anàlisi de les dades en aquest per al conjunt de dades __Wine Dataset__. 
