@@ -1,5 +1,5 @@
 ---
-title: "Pràctica 2: Neteja "
+title: "Pràctica 2: Neteja i anàlisi de les dades"
 author: "Roger Bosch Mateo"
 date: "12/19/2019"
 output:
@@ -52,7 +52,7 @@ Els atributs són:
 A partir d'aquest conjunt de dades es planteja la problemàtica de determinar quines són les variables més important que ens permeten diferenciar entre diversos tipus de vins. A partir d'aquestes variables podrem crear models que ens classifiquin cada observació del vi en un determinat grup.
 
 
-En el sector aquestes dades són d'interés pre qualsevol empresa que es dediqui al cultiu i fabriacació de vi. A partir d'anàlisi de vins existents en el mercat podrem veure quins vins són més similars als nostres i quins són més dispars, fet que pot ajudar a determinar estratègies de marqueting en la venda d'aquests segons els atributs diferenciadors. A més, si aquests vins els identifiquèssim amb el seu preu podriem inferir en el preu que tindria el nostre.
+En el sector aquestes dades són d'interés per qualsevol empresa que es dediqui al cultiu i fabriacació de vi. A partir d'anàlisi de vins existents en el mercat podrem veure quins vins són més similars als nostres i quins són més dispars, fet que pot ajudar a determinar estratègies de marqueting en la venda d'aquests segons els atributs diferenciadors. A més, si aquests vins els identifiquèssim amb el seu preu podriem inferir en el preu que tindria el nostre.
 
 # Integració i selecció de les dades d'interès a analitzar.
 
@@ -145,7 +145,10 @@ wine$type <- as.factor(wine$type)
 Anem doncs a veure els tipus de vins.
 ```{r}
 library(ggplot2)
-ggplot(wine, aes(x=type)) + geom_bar() + labs(title="Wine types") + geom_text(stat='count', aes(label=..count..), size=4, vjust = -0.3)
+ggplot(wine, aes(x=type)) + 
+  geom_bar() + 
+  labs(title="Wine types") +
+  geom_text(stat='count', aes(label=..count..), size=4, vjust = -0.3)
 ```
 
 
@@ -162,8 +165,10 @@ Per a la comproació de la homoscedasticitat utilitzarem o bé el test de _Leven
 
 ```{r message=FALSE, warning=FALSE}
 library(lawstat)
-norm_homo_test <- data.frame(variable=header[-1], shapiro=NA, kolmogorov=NA, levene=NA, fligner=NA)
-print("***** Outliers identification *****")
+norm_homo_test <- data.frame(variable=header[-1], shapiro=NA, 
+                             kolmogorov=NA, levene=NA, fligner=NA)
+
+print("***** Norm and homo identification *****")
 index <- 1
 for (col_name in norm_homo_test$variable){
   values <- wine[[as.symbol(col_name)]]
@@ -173,7 +178,8 @@ for (col_name in norm_homo_test$variable){
   kolmogorov <- ks.test(values, pnorm, mean(values), sd(values))
   norm_homo_test[index, 3] <- ifelse (kolmogorov$p.value > 0.05, "NORM", "NOT NORM")
   
-  if (norm_homo_test[index, "shapiro"] == "NORM" | norm_homo_test[index , "kolmogorov"] == "NORM"){
+  if (norm_homo_test[index, "shapiro"] == "NORM" |
+      norm_homo_test[index , "kolmogorov"] == "NORM"){
     levene_test <- levene.test(wine[["malic"]], wine$type)
     norm_homo_test[index, 4] <- ifelse (levene_test$p.value > 0.05, "HOMO", "NOT HOMO")
   }
@@ -214,7 +220,8 @@ Cal dir que aquest tros de codi de calcula una matriu amb les parelles d'atribut
 
 El primer pas és crear una matriu amb el test de correlació per parelles.
 ```{r message= FALSE, warning=FALSE}
-# El codi d'aquesta funció ha sigut extret del següent enllaç i adaptat per aquesta pràctica.
+# El codi d'aquesta funció ha sigut extret del següent enllaç 
+# i adaptat per aquesta pràctica.
 # http://www.sthda.com/english/wiki/visualize-correlation-matrix-using-correlogram
 calculate_cor_matrix <- function(mat, ...) {
     mat <- as.matrix(mat)
@@ -242,8 +249,7 @@ cor_dataset <- wine[, -1]
 cor_matrix <- calculate_cor_matrix(cor_dataset)
 # Creem la matriu de correlació per parelles d'atributs
 correlation_matrix <- cor(cor_dataset, 
-                          method = "pearson", # Mètode Spearam
-                          use="complete.obs"   # Ignorem els NAs
+                          method = "pearson"
                           )
 
 # Plasmem en un gràfic els resultats
@@ -255,6 +261,9 @@ corrplot(correlation_matrix, type="upper", method="color",
          insig = "blank"
          )
 ```
+
+
+
 En la gràfica podem veure la correlació entre les variables representades entre -1 i 1. Els valors que s'apropen a -1 inidquen una correlació negativa i els que s'apropen a 1 una correlació positiva. Cal mencionar que una correlació de -0.8 i 0.8 són igual de potents entre elles i l'únic que canvia és si la correlaicó és positiva o negativa.
 
 
@@ -265,7 +274,7 @@ Podem veure també com la variable que té una correlació més forta amb les al
 
 Anem ara a veure com estan repartits els grups en aquestes variables.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(ggpubr)
 
 plot_relationship <- function(x, y){
@@ -353,7 +362,8 @@ single_silhouette <- function(data_frame, k_cluster){
   return(mean(sk[, 3]))
 }
 
-# Funció que retorna un gràfic amb les diverses siluetes pel rang de valors de cluster especificat.
+# Funció que retorna un gràfic amb les diverses siluetes pel rang de 
+# valors de cluster especificat.
 calculate_silhouette <- function(data_frame, n_clusters, title){
   # Creem un vector de 10 posicions (encara que utilizarem de la 2 a la 10).
   silhouette_cluster <- vector(length = 10)
@@ -363,13 +373,15 @@ calculate_silhouette <- function(data_frame, n_clusters, title){
   }
   
   # Creem el gràfic inserint només els valors del vector de 2 a 10 i el retornem
-  plot <-  ggplot(data = data.frame(x = 2:10, y = silhouette_cluster[2:10]), aes(x = x, y = y)) + geom_line() + geom_point() + 
+  plot <-  ggplot(data = data.frame(x = 2:10, y = silhouette_cluster[2:10]), 
+                  aes(x = x, y = y)) + geom_line() + geom_point() + 
     labs(title=title, x="Number of clusters", y="Average silhouette width")
   
   return(plot)
 }
 
-calculate_silhouette(zWine, 10, "Optimal number of clusters using average silhouette method")
+calculate_silhouette(zWine, 10, 
+                     "Optimal number of clusters using average silhouette method")
 ```
 
 
@@ -378,7 +390,8 @@ El nombre de cluster que presenta una millor silueta és en aquest cas __3__. Ca
 
 ```{r message= FALSE, warning=FALSE}
 # Creem el gràfic inserint només els valors del vector de 2 a 10
-calculate_silhouette(wine, 10, "Optimal number of clusters using average silhouette method (not normalized)")
+calculate_silhouette(wine, 10, 
+                     "Optimal number of clusters using average silhouette method (not normalized)")
 ```
 
 El segon mètode és __l'Elbow__ que busca la menor suma del quadrat de les distàncies dels punts de cada grup respecte al seu centre. Per obtenir aquest valor no hem de fer molta cosa ja que és calculat automàticament pel _kmeans_.
@@ -400,7 +413,8 @@ calculate_elbow <- function(data_frame, n_clusters, title){
   }
   
   # Creem el gràfic inserint només els valors del vector de 2 a 10
-  plot <- ggplot(data = data.frame(x = 1:10, y = elbow_cluster[1:10]), aes(x = x, y = y)) + geom_line() + geom_point() + 
+  plot <- ggplot(data = data.frame(x = 1:10, y = elbow_cluster[1:10]), 
+                 aes(x = x, y = y)) + geom_line() + geom_point() + 
     labs(title=title, x="Number of clusters", y="Total within sum of square")
   
   return(plot)  
@@ -428,7 +442,8 @@ get_kmeans_plot <- function(dataset, k, title){
   result <- kmeans(dataset, centers = k, nstart = 50,iter.max = 15)
   
   # Graphical representation of the clusters
-  fviz_cluster(result, data = dataset, show.clust.cent = TRUE, geom = "point", ellipse.type = "norm", main = title)
+  fviz_cluster(result, data = dataset, show.clust.cent = TRUE, geom = "point", 
+               ellipse.type = "norm", main = title)
 }
 
 get_kmeans_plot(zWine, 3, "Cluster for k = 3 (normalized)")
@@ -542,7 +557,8 @@ create_sample <- function(dataset, types, train_prop, seed){
   test_sample <- dataset[-my_sample,]
   test_type <- types[-my_sample]
   
-  return(new("Sample", train_sample=train_sample, train_type=train_type, test_sample=test_sample, test_type=test_type))
+  return(new("Sample", train_sample=train_sample, train_type=train_type, 
+             test_sample=test_sample, test_type=test_type))
 }
 ```
 
@@ -557,6 +573,7 @@ get_knn <- function(dataset, types, train_prop, k){
   # Apliquem l'algorsime
   knn_wine <- knn(samples@train_sample, samples@test_sample, cl=samples@train_type, k=k)
   
+   # Calculem la precisió de l'algorisme
   accuracy <- calculate_probability(knn_wine, samples@test_type)
   
   return(new("Knn", sample=samples, knn=knn_wine, accuracy=accuracy))
@@ -583,17 +600,33 @@ Com es pot observar en el gràfic a partir de k>70 l'algorisme comença a mostra
 
 ### Arbres de classificació
 
+Els arbres de classificació formen parts dels algorismes supervisats, i són utilitzats per predir el valor d'una variable categòrica (en aquest cas el tipus de vi) segons els valors que prenen les altres variables. A més de permetre crear aquests models per predir els valors, són una eina molt potent des del punt de vista d'anàlisi exploratòria perquè ens permet entendre les variables que ajuden a classificar i per tant les característiques de cada vi.
 
+Anem doncs a aplicar l'algorisme gràcies a la llibreria C50.
 ```{r}
 library(C50)
+# Separem el dataset en train i test
 wine.sample <- create_sample(wine, wine_types, 0.7, 1)
+
+# Apliquem l'algorisme
 wine.modelC50 <- C5.0(wine.sample@train_sample, wine.sample@train_type)
+
+# El visualitzem
 plot(wine.modelC50)
 ```
 
+COm es pot veure en l'arbre de decisisó obtingut els vins de tipus 1 són aquells en que el valor de "flavanoids" és superior a 1.57, el valor de "proline" és superior a "750" i el valor de "color" superior a 3.4. En canvi, els vins de tipus 3 són aquells amb el valor de "flavanoids" inferior o igual a 1.57 i amb "color" superior a 3.8. Pel que fa al grup 2, en aquest arbre està més repartit pels diferents nodes (en un total de 3) tot i que el grup principal és aquell amb "flavanoids" superior a 1.57 i "proline" inferior o igual a 750. Les altres dues fulles de l'arbre que contenen observacions del grup 2 una només en té 2 i l'altre 8.
+
+
+Com en els casos anteriors anem a veure com de "bo" és el model creat per a la predicció dels tipus de vins.
 
 ```{r}
+# Predim els nous valors utilitzant el model creat
 predicted_model <- predict(wine.modelC50, wine.sample@test_sample, type="class")
-print(sprintf("Accuracy: %.2f %%",100*sum(predicted_model == wine.sample@test_type) / length(predicted_model)))
+# Calculem la precisió
+print(100*sum(predicted_model == wine.sample@test_type) / length(predicted_model))
 ```
+
+En aquest cas l'algorisme ha aconseguit un resultat molt bo amb una precisió del 96.30 %.
+
 # Conclusions
