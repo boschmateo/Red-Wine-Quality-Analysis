@@ -2,6 +2,7 @@
 title: "Pràctica 2: Neteja i anàlisi de les dades"
 author: "Roger Bosch Mateo"
 date: "12/19/2019"
+bibliography: references.bib
 output:
   pdf_document:
     highlight: zenburn
@@ -9,17 +10,36 @@ output:
     number_sections: yes
   html_document:
     highlight: default
-    number_sections: ye
+    number_sections: yes
     theme: cosmo
     toc: yes
     toc_depth: 2
 editor_options: 
   chunk_output_type: inline
+header-includes:
+  - \usepackage[catalan]{babel}
 ---
+
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+\newpage
+
+# Llibreries utilitzades
+
+Per a la resolució d'aquesta pràctica s'han utilitzat diverses llibreries per facilitar la feina d'aplicació d'algorismes 
+o voisualització d'aquests. Les llibreries utilitzades són:
+
+* ggplot2 [@ggplot2] per a la visualització de gràfiques, juntament amb ggpubr [@ggpubr] per juntar-les en una sola imatge i GGally [@GGally] per estudiar les variables per parelles.
+* factoextra [@factoextra], cluster [@cluster] per a tasques d'elecció del nombre de clusters i la seva visualització.
+* corrplot [@corrplot] per a la visualització de la matriu de correlació.
+* dplyr [@dplyr] per al filtratge i selecció de dades.
+* lawstat [@lawstat] per aplicar el test de Levene.
+* C50 [@C50] per als arbres de classificació.
+
 
 # Descripció del dataset
 
@@ -168,7 +188,6 @@ library(lawstat)
 norm_homo_test <- data.frame(variable=header[-1], shapiro=NA, 
                              kolmogorov=NA, levene=NA, fligner=NA)
 
-print("***** Norm and homo identification *****")
 index <- 1
 for (col_name in norm_homo_test$variable){
   values <- wine[[as.symbol(col_name)]]
@@ -615,7 +634,7 @@ wine.modelC50 <- C5.0(wine.sample@train_sample, wine.sample@train_type)
 plot(wine.modelC50)
 ```
 
-COm es pot veure en l'arbre de decisisó obtingut els vins de tipus 1 són aquells en que el valor de "flavanoids" és superior a 1.57, el valor de "proline" és superior a "750" i el valor de "color" superior a 3.4. En canvi, els vins de tipus 3 són aquells amb el valor de "flavanoids" inferior o igual a 1.57 i amb "color" superior a 3.8. Pel que fa al grup 2, en aquest arbre està més repartit pels diferents nodes (en un total de 3) tot i que el grup principal és aquell amb "flavanoids" superior a 1.57 i "proline" inferior o igual a 750. Les altres dues fulles de l'arbre que contenen observacions del grup 2 una només en té 2 i l'altre 8.
+Com es pot veure en l'arbre de decisisó obtingut els vins de tipus 1 són aquells en que el valor de "flavanoids" és superior a 1.57, el valor de "proline" és superior a "750" i el valor de "color" superior a 3.4. En canvi, els vins de tipus 3 són aquells amb el valor de "flavanoids" inferior o igual a 1.57 i amb "color" superior a 3.8. Pel que fa al grup 2, en aquest arbre està més repartit pels diferents nodes (en un total de 3) tot i que el grup principal és aquell amb "flavanoids" superior a 1.57 i "proline" inferior o igual a 750. Les altres dues fulles de l'arbre que contenen observacions del grup 2 una només en té 2 i l'altre 8.
 
 
 Com en els casos anteriors anem a veure com de "bo" és el model creat per a la predicció dels tipus de vins.
@@ -630,3 +649,24 @@ print(100*sum(predicted_model == wine.sample@test_type) / length(predicted_model
 En aquest cas l'algorisme ha aconseguit un resultat molt bo amb una precisió del 96.30 %.
 
 # Conclusions
+
+En aquesta segona pràctica hem pogut treballar la càrrega, neteja i anàlisi de les dades en aquest per al conjunt de dades __Wine Dataset__. 
+
+Hem vist com el conjunt de dades no presentava zeros o elements buits, però si alguns valors extrems (outliers) que hem decidit mantenir perquè en cap cas es tractaven de valors erronis, i es podien donar perfectament durant l'anàlisi químic dels components del vi.
+
+Tanmateix, hem realitzat un anàlisi estadístic de la normalitat i homoscedasticitat de les dades, on hem vist resultats controvertits depenent de la prova estadística escollida. Tot i això hem vist com la majoria de les dades seguien una distribució normal i en cap cas homoscedàstica, fet que ens ha permés intuïr que les dades es podrien classificar fàcilment.
+
+Pel que fa a l'anàlisi de les dades primer s'ha realitzat una estudi de la correlació de les variables i després s'han aplicat algorsimes no supervisats i supervisats per a la classificació de les dades.
+
+En l'estudi de la correlació hem vist com hi havien algunes variables molt positivament correlacionades i que a més al visualitzar-les permetien diferenciar molt clarament els diferents tipus de vins.
+
+En el cas dels algorismes n'hem aplicat un total de cuatre: dos de no supervisats (k-means i hierarchical agglomerative clustering) i dos de supervisats (arbres de classificació i Knn). Cal mencionar que tots han obtingut un molt bon resultat amb precisions no inferiors al 94.94%. L'algorsime que millor ha funcionat és el supervisat __Knn__ que ha obtingut un 98.15% d'acerts, seguit del k-means amb un 96.29%, els arbres de decisió amb un 96.29% i el hierarchical agglomerative clustering amb un 94.94%.
+
+Cal dir però que tot i que Knn aconsegueix el major _ratio_ d'acerts, aquests és nomes un 3% superior al que ha obtingut pitjor resultat. La gràcia és que tots els altres algorismes ens permeten extreure informació valuosa i d'una manera sencilla com poden ser els arbres de decisió amb les variables clau que separen els diferents grups, o la qualitat de la separació d'aquests grups amb hierarchical agglomerative clustering o k-means.
+
+Finalment destacar la potència dels algorismes no supervisats que sense saber prèviament els grups aconsegueix una classificació excel·lent. A més tot i que  hierarchical agglomerative clustering té el "pitjor" ratio dels cuatre algorismes aquest l'aconsegueix sense ni tan sols haver d'especificar el nombre de clusters presents en el conjunt de dades.
+
+
+
+\newpage
+# Referències
