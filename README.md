@@ -5,7 +5,7 @@ The objective of this assignment is to clean and analyze any dataset found onlin
 
 # Repository structure
 
-* `analysis`: Folder that contains the original R markdown file of the analysis along the exported files in HTML and PDF: `analysis.*`. It also has a BibiTex file `references.bib` for the references.
+* `analysis`: Folder that contains the original R markdown file of the analysis along the exported files in HTML and PDF: `analysis.*`. It also has a BibTex file `references.bib` for the references.
 * `data`: Folder that contains the original dataset `wine.csv` and a new csv `wine_out.csv` with the analyzed data.
 
 # Contributions
