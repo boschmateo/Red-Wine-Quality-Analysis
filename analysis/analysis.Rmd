@@ -328,6 +328,33 @@ ggpairs(wine,
 
 Tot i que al haver tantes variables les gràfiques queden molt petites i costa diferenciar podem veure com clarament la variable "plorine" combinada amb alguna de les altres com pot ser "hue", "color" o "dilution" ens permeten diferenciar d'una manera clara els diversos grups de vins.
 
+
+### Kruskal-Wallis
+
+```{r}
+for(col in header[-1]){
+  if (kruskal.test(x=wine[[col]], g=wine$type)$p.value < 0.5){
+     print(paste0(col, " : has significant differences between the different types of wines"))
+  }
+}
+
+```
+
+```{r}
+library(dplyr)
+difference <- data.frame(variable=header[-1], max_diff=NA)
+index <- 1
+for(col in header[-1]){
+  print(col)
+  test <- pairwise.wilcox.test(wine[[col]], wine$type, p.adjust.method = "holm")
+  difference[index, 2] <- max(na.omit(as.numeric(unlist(test$p.value))))
+  #print(pairwise.wilcox.test(wine[[col]], wine$type, p.adjust.method = "holm"))
+  index <- index + 1
+}
+
+difference %>% arrange(desc(max_diff))
+```
+
 ### Mètodes de classificació no supervisats
 
 Els mètodes de classificació no supervisats són aquells que sense indicar-li a l'algrosime a quin grup pertany cada observació aquests busca agrupar-les segons les similituds entre observacions.
@@ -382,7 +409,7 @@ single_silhouette <- function(data_frame, k_cluster){
 }
 
 # Funció que retorna un gràfic amb les diverses siluetes pel rang de 
-# valors de cluster especificat.
+#valors de cluster especificat.
 calculate_silhouette <- function(data_frame, n_clusters, title){
   # Creem un vector de 10 posicions (encara que utilizarem de la 2 a la 10).
   silhouette_cluster <- vector(length = 10)
