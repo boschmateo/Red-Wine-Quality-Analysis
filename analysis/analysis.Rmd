@@ -45,21 +45,20 @@ o voisualització d'aquests. Les llibreries utilitzades són:
 
 Per a la resolució d'aquesta segona i última pràctica de l'assignatura de _Tipología i cicle de vida de les dades_ s'ha decidit escollir un dataset present en el repositori de CU Irvine Machine Learning: [Wine Dataset](http://archive.ics.uci.edu/ml/datasets/Wine).
 
-El dataset conté els resultats d'haver realitzat un anàlisi químic de vins cultivats a la mateixa regió d'Itàlia però provinents de tres conreus diferents. Aquest està compost per 178 observacions amb un total de 14 atributs cadascun; un atribut que ens especifica quin vi és i tretze més provinents de l'anàlisi químic.
+El dataset conté els resultats d'haver realitzat una anàlisi químic de vins cultivats a la mateixa regió d'Itàlia però provinents de tres conreus diferents. Aquest està compost per 178 observacions amb un total de 14 atributs cadascun; un atribut que ens especifica quin vi és i tretze més provinents de l'anàlisi químic.
 
 ## Atributs
-
 
 Els atributs són:
 
 * __type__: El tipus de vi que es tracta. Hi ha un total de 3 classes diferents.
-* __alcohol__:  Graduació d'alcohol.
-* __malic__: Concentració d'àcid màlic que és el responsable de l'aciedesa del raïm.
+* __alcohol__: Graduació d'alcohol.
+* __malic__: Concentració d'àcid màlic que és el responsable de l'acidesa del raïm.
 * __ash__: Concentració de cendra (g/L).
 * __alcalinity__: Alcalinitat de les cendres
 * __magnesium__: Concentració de magnesi.
-* __phenols__: Valor total dels fenols del vi que afecten al sabor, color i textura com àcids fenòlics, flavanols o antocianines entre d'altres.
-* __flavanoids__: Subgrup dels phenols. Normalment sobre el 90% dels fenols del vi son flavanoids. Afecten doncs també al saber, color i textura del vi.
+* __phenols__: Valor total dels fenols del vi que afecten el sabor, color i textura com àcids fenòlics, flavanols o antocianines entre d'altres.
+* __flavanoids__: Subgrup dels phenols. Normalment sobre el 90% dels fenols del vi són flavanoids. Afecten doncs també al saber, color i textura del vi.
 * __nonflavanoids__: Fenols que no són flavanoids.
 * __proanthocyanins__: Proantocianidina, en part dona el color dels vins.
 * __color__: Intensitat del color del vi.
@@ -69,14 +68,13 @@ Els atributs són:
 
 ## Importància i objectius de l'anàlisi
 
-A partir d'aquest conjunt de dades es planteja la problemàtica de determinar quines són les variables més important que ens permeten diferenciar entre diversos tipus de vins. A partir d'aquestes variables podrem crear models que ens classifiquin cada observació del vi en un determinat grup.
+A partir d'aquest conjunt de dades es planteja la problemàtica de determinar quines són les variables més importants que ens permeten diferenciar entre diversos tipus de vins. A partir d'aquestes variables podrem crear models que ens classifiquin cada observació del vi en un determinat grup.
 
-
-En el sector aquestes dades són d'interés per qualsevol empresa que es dediqui al cultiu i fabriacació de vi. A partir d'anàlisi de vins existents en el mercat podrem veure quins vins són més similars als nostres i quins són més dispars, fet que pot ajudar a determinar estratègies de marqueting en la venda d'aquests segons els atributs diferenciadors. A més, si aquests vins els identifiquèssim amb el seu preu podriem inferir en el preu que tindria el nostre.
+En el sector aquestes dades són d'interès per qualsevol empresa que es dediqui al cultiu i fabricació de vi. A partir d'anàlisi de vins existents en el mercat podrem veure quins vins són més similars als nostres i quins són més dispars, fet que pot ajudar a determinar estratègies de màrqueting en la venda d'aquests segons els atributs diferenciadors. A més, si aquests vins els identifiquéssim amb el seu preu podríem inferir en el preu que tindria el nostre.
 
 # Integració i selecció de les dades d'interès a analitzar.
 
-EL primer às per a realitzar la integració de les dades serà carregar aquestes en memòria. Per a fer-ho, utilitzarem el fitxer CSV de l'enllaç proporcionat i la funció read.csv() de R. Com el fitxer CSV no conté el nom de les variables a l'inici d'aquest, ho indicarem utilitzant el valor Fals a header.
+EL primer pas per a realitzar la integració de les dades serà carregar aquestes en memòria. Per a fer-ho, utilitzarem el fitxer CSV de l'enllaç proporcionat i la funció read.csv() de R. Com el fitxer CSV no conté el nom de les variables a l'inici d'aquest, ho indicarem utilitzant el valor Fals a header.
 ```{r}
 # Carreguem les dades
 wine <- read.csv("../data/wine.csv", header = FALSE)
@@ -91,9 +89,9 @@ header <- c("type", "alcohol", "malic", "ash", "alcalinity", "magnesium",
 names(wine) <- header
 ```
 
-Pel que fa la selecció de les dades d'interés inicialment seran totes les presents en el dataset, perquè totes aquestes són el resultat d'un anàlisi químic i inicialment no podem dir quines són les més irrellevant i obviar-les ja que per fer-ho necessitem analitzar-les.
+Pel que fa a la selecció de les dades d'interés inicialment seran totes les presents en el dataset, perquè totes aquestes són el resultat d'un anàlisi químic i inicialment no podem dir quines són les més irrellevants i obviar-les perquè per fer-ho necessitem analitzar-les.
 
-Cal dir però que realment el que ens interessa es veure si els atributs ens permet classificar els diversos tipus de vins. Evidentment podrem aplicar tant algorismes no supervisats com supervisats per a fer-ho. En els no supervisats el valor del tipus de vi no serà necessari per a la classificació, tot i que pot resultar igualment interessant per veure la proporció d'observacions classificads correctament.
+Cal dir però que realment el que ens interessa es veure si els atributs ens permet classificar els diversos tipus de vins. Evidentment podrem aplicar tant algorismes no supervisats com supervisats per a fer-ho. En els no supervisats el valor del tipus de vi no serà necessari per a la classificació, tot i que pot resultar igualment interessant per veure la proporció d'observacions classificades correctament.
 
 En resum, utilitzarem totes les dades per a realitzar l'anàlisi d'aquestes.
 
@@ -104,11 +102,11 @@ Per començar amb la neteja de les dades, visualitzem que les dades s'hagin carr
 str(wine)
 ```
 
-Amb una primera ullada no veiem res estranyat durant la càrrega d'aquestes. Totes la variables que s'han carregat són de tipus numèric, tal i com esperavem per la descripció del dataset.
+Amb una primera ullada no veiem res estranyat durant la càrrega d'aquestes. Totes les variables que s'han carregat són de tipus numèric, tal i com esperàvem per la descripció del dataset.
 
 ## Tractament de zeros o elements buits
 
-Usualment, en els conjunts de dades s'utilitzen diferents valors per marcar l'ausència d'aquests com poden ser els "0", els "NA" o fins i tot alguns caràcters com podria ser "?". Segudiament, comprovarem si les dades carregades presenten alguns d'aquests valors i en cas afirmatiu decidirem com procedir.
+Usualment, en els conjunts de dades s'utilitzen diferents valors per marcar l'absència d'aquests com poden ser els "0", els "NA" o fins i tot alguns caràcters com podria ser "?". Seguidament, comprovarem si les dades carregades presenten alguns d'aquests valors i en cas afirmatiu decidirem com procedir.
 
 * Elements buits:
 ```{r message= FALSE, warning=FALSE}
@@ -125,14 +123,14 @@ colSums(wine == 0)
 
 Per tant podem dir que les dades carregades d'aquest conjunt de dades no presenten zeros ni elements buits, i per tant, no caldrà tractar-los.
 
-Evidentment és mol usual trobar casos en els que aquests valors són presents, i segons cada cas podrem decidir per exemple si eliminar aquestes observacions, inferir un valor (ja sigui la mitjana o amb algorismes més complexos com knn) o decidir si mantenir el valor (un cero pot ser perfectament un valor vàlid).
-
+Evidentment és molt usual trobar casos en els quals aquests valors són presents, i segons cada cas podrem decidir per exemple si eliminar aquestes observacions, inferir un valor (ja sigui la mitjana o amb algorismes més complexos com knn) o decidir si mantenir el valor (un zero pot ser perfectament un valor vàlid).
 
 ## Identificació i tractament dels valors extrems
 
-Els valors extrems (outliers) són aquells valors de les observacions que es troben tres desviacions estàndard per sobre o per sota. Una manera senzilla de detecar-los és amb la funció __boxplot.stats__ que ens crea un llistat amb aquests valors.
+Els valors extrems (outliers) són aquells valors de les observacions que es troben tres desviacions estàndard per sobre o per sota. Una manera senzilla de detectar-los és amb la funció __boxplot.stats__ que ens crea un llistat amb aquests valors.
 
-Crearem doncs un bucle senzill en el que si les dades presenten outliers ens mostri els valors d'aquests, i a més un petit resum d'aquella columna per poder determinar més correctament que fer en cada cas.
+Crearem doncs un bucle senzill en el qual si les dades presenten outliers ens mostri els valors d'aquests, i a més un petit resum d'aquella columna per poder determinar més correctament que fer en cada cas.
+
 ```{r}
 print("***** Outliers identification *****")
 for (column in names(wine)){
@@ -150,14 +148,13 @@ for (column in names(wine)){
 }
 ```
 
-La meitat dels atributs del conjunt de dades no presenten cap tipus d'outlier, mentre que la meitat que si que en presenta no són moltes les observacions en que aquest cas es dona. Addicionalment, si ens fixem en els valors dels outliers, tot i que estadísticament siguin valors considerats com a tal aquests es podrien donar perfectament durant l'anàlisi químic i per tant el que farem serà mantenir aquests valors dintre de les observacions i procedir com si res.
-
+La meitat dels atributs del conjunt de dades no presenten cap mena d'outlier, mentre que la meitat que sí que en presenta no són moltes les observacions en què aquest cas es dóna. Addicionalment, si ens fixem en els valors dels outliers, encara que estadísticament siguin valors considerats com a tal aquests es podrien donar perfectament durant l'anàlisi químic i per tant el que farem serà mantenir aquests valors dintre de les observacions i procedir com si res.
 
 # Anàlisi de les dades
 
 ## Selecció dels grups de dades que es volen analitzar
 
-Bàsciament, el que volem realitzar en aquesta segona pràctica és la classificació dels __tres tipus de vins__ gràcies als seus atributs. Evidentment en el dataset no contem amb més informació sobre el tipus de vi, i només sabem que pertanyen al grup 1, 2 o 3. Per tant, el que farem serà definir aquests únics tres nivells al conjunt de dades.
+Bàsicament, el que volem realitzar en aquesta segona pràctica és la classificació dels __tres tipus de vins__ gràcies als seus atributs. Evidentment en el dataset no comptem amb més informació sobre el tipus de vi, i només sabem que pertanyen al grup 1, 2 o 3. Per tant, el que farem serà definir aquests únics tres nivells al conjunt de dades.
 ```{r}
 wine$type <- as.factor(wine$type)
 ```
@@ -174,14 +171,13 @@ ggplot(wine, aes(x=type)) +
 
 Com ja haviem dit tenim tres tipus de vins. A més, la quantitat de cadascun no és homogènia i trobem 59 vins del tipus 1, 71 vins del tipus 2 i 48 vins del tipus 3.
 
-
 ## Comprovació de la normalitat i homogeneïtat de la variància
 
-La comprovació de la normalitat i homogeneïtat de la variància de les dades és un punt molt important en la fase de l'anàlisi de les dades. Segons els resultats que obtinguem, per exemple, si podem corroborrar que les dades segueixen una distribució normal i homoscedasticitat podrem aplicar proves per contrast d'hipòtesi de tipus paramètric com _t Student_ mentre que si no és el cas ens haurem de decantar per probes no paramètriques com _Wilcoxon_.
+La comprovació de la normalitat i homogeneïtat de la variància de les dades és un punt molt important en la fase de l'anàlisi de les dades. Segons els resultats que obtinguem, per exemple, si podem corroborar que les dades segueixen una distribució normal i homoscedasticitat podrem aplicar proves per contrast d'hipòtesi de tipus paramètric com _t Student_ mentre que si no és el cas ens haurem de decantar per proves no paramètriques com _Wilcoxon_.
 
 Per a la comprovació de la normalitat utilitzarem els tests de _Kolmogorov-Smirnov_ i _Shapiro-Wilk_. Aquest segon és considerat un mètode més conservador que el primer ja que asumeix que les dades no segueixen una distribució normal.
 
-Per a la comproació de la homoscedasticitat utilitzarem o bé el test de _Levene_ si les dades sequeixen una distribució normal o el test de _Fligner-Killeen_ en cas que no.
+Per a la comprovació de l'homoscedasticitat utilitzarem o bé el test de _Levene_ si les dades segueixen una distribució normal o el test de _Fligner-Killeen_ en cas que no.
 
 ```{r message=FALSE, warning=FALSE}
 library(lawstat)
@@ -199,7 +195,7 @@ for (col_name in norm_homo_test$variable){
   
   if (norm_homo_test[index, "shapiro"] == "NORM" |
       norm_homo_test[index , "kolmogorov"] == "NORM"){
-    levene_test <- levene.test(wine[["malic"]], wine$type)
+    levene_test <- levene.test(wine[[as.symbol(col_name)]], wine$type)
     norm_homo_test[index, 4] <- ifelse (levene_test$p.value > 0.05, "HOMO", "NOT HOMO")
   }
   else{
@@ -222,22 +218,21 @@ Pel que fa a la normalitat de les dades, en 5 de les variables els dos tests est
 
 En la resta de variables els tests tenen resultats diferents, encara que serem positius i agafarem els resultats del test de Kolmogorov i suposarem que la resta també segueixen una distribució normal.
 
-Finalment, podem veure com totes la variables no tenen una igualtat entre la variància dels grups. Aquest punt és profitós per a nosaltres perquè podem asumir que els diferents tipus de vins tindran característiques diferents.
+Finalment, podem veure com 4 variables (alcohol, alcalinity, magnesium i proanthocyanins) mantenen una homogeneïtat entre la variància del tipus de vi, mentre que les altres 9 variables no.
 
 
 ## Aplicació de proves estadístiques
 
 ### Estudi de la correlació de les variables
 
-L'estudi de la correlació de les variables és un punt clau en l'anàlisi de les dades. Aquest ens permetrà veure quines dades estàn més o menys correlacionades entre sí. Veurem doncs quines són les variables que més correlacionades estan entre si, i visualitzarem com queden els grups de dades dintre d'aquestes. Cal dir des d'un inici, que tot i que dues variables tinguin una alta correlació no vol dir en cap moment que ens ajudi a poder-les classificar millor, sinó únicament que hi ha una dependència lineal entre elles.
+L'estudi de la correlació de les variables és un punt clau en l'anàlisi de les dades. Aquest ens permetrà veure quines dades estan més o menys correlacionades entre sí. Veurem doncs quines són les variables que més correlacionades estan entre si, i visualitzarem com queden els grups de dades dintre d'aquestes. Cal dir des d'un inici, que tot i que dues variables tinguin una alta correlació no vol dir en cap moment que ens ajudi a poder-les classificar millor, sinó únicament que hi ha una dependència lineal entre elles.
 
 En aquest apartat cal tenir en compte que com la majoria de les dades seguien una distribució normal, utilitzarem el mètode __pearson__. Addicionalment, per a cada parella d'atributs farem un test de correlació per determinar si aquesta és significativa o no i eliminar les que no ho siguin.
 
-
-
-Cal dir que aquest tros de codi de calcula una matriu amb les parelles d'atributs ha sigut extret d' [aquí](http://www.sthda.com/english/wiki/visualize-correlation-matrix-using-correlogram).
+Cal dir que aquest tros de codi que calcula una matriu amb les parelles d'atributs ha sigut extret d' [aquí](http://www.sthda.com/english/wiki/visualize-correlation-matrix-using-correlogram).
 
 El primer pas és crear una matriu amb el test de correlació per parelles.
+
 ```{r message= FALSE, warning=FALSE}
 # El codi d'aquesta funció ha sigut extret del següent enllaç 
 # i adaptat per aquesta pràctica.
@@ -283,13 +278,11 @@ corrplot(correlation_matrix, type="upper", method="color",
 
 
 
-En la gràfica podem veure la correlació entre les variables representades entre -1 i 1. Els valors que s'apropen a -1 inidquen una correlació negativa i els que s'apropen a 1 una correlació positiva. Cal mencionar que una correlació de -0.8 i 0.8 són igual de potents entre elles i l'únic que canvia és si la correlaicó és positiva o negativa.
-
+En la gràfica podem veure la correlació entre les variables representades entre -1 i 1. Els valors que s'apropen a -1 indiquen una correlació negativa i els que s'apropen a 1 una correlació positiva. Cal mencionar que una correlació de -0.8 i 0.8 són igual de potents entre elles i l'únic que canvia és si la correlació és positiva o negativa.
 
 Primer de tot podem veure com la majoria de les variables estan correlacionades entre si (amb més o menys intensitat) de manera positiva. Podem destacar per exemple la correlació positiva entre "flavanoids" i "phenols" o "dilution" i "flavanoids", o la correlació negrativa entre "hue" i "malic".
 
 Podem veure també com la variable que té una correlació més forta amb les altres és "flavanoids" que té una correlació superior a 0.5 amb 6 de les 13 variables (gairebé 7 perquè en tenim una amb 0.49). La variable "ash" en canvi en 5 de les 13 variables la correlació entre aquestes és insignificant.
-
 
 Anem ara a veure com estan repartits els grups en aquestes variables.
 
@@ -326,10 +319,13 @@ ggpairs(wine,
 ```
 
 
-Tot i que al haver tantes variables les gràfiques queden molt petites i costa diferenciar podem veure com clarament la variable "plorine" combinada amb alguna de les altres com pot ser "hue", "color" o "dilution" ens permeten diferenciar d'una manera clara els diversos grups de vins.
-
+Tot i que a l'haver tantes variables les gràfiques queden molt petites i costa diferenciar podem veure com clarament la variable "plorine" combinada amb alguna de les altres com pot ser "hue", "color" o "dilution" ens permeten diferenciar d'una manera clara els diversos grups de vins.
 
 ### Kruskal-Wallis
+
+La següent prova que realitzarem és la de Kruskal-Wallis que ens permetrà identificar quines variables mostren diferències significatives per al tipus de vi.
+
+A l'aplicar el test, aquest ens dirà si hi ha diferències significatives entre dos o més tipus de vins, però no ens dirà en quins. Per tant, primer de tot anem a veure quines variables presenten diferències significatives.
 
 ```{r}
 for(col in header[-1]){
@@ -337,43 +333,62 @@ for(col in header[-1]){
      print(paste0(col, " : has significant differences between the different types of wines"))
   }
 }
-
 ```
+Com es pot observar totes 13 variables presenten una diferència significativa. Seguidament estudiarem com de significatives són.
+Per exemple, per una variable ho podríem calcular utilitzant el test de Wilcox.
+```{r}
+pairwise.wilcox.test(wine[["color"]], wine$type, p.adjust.method = "holm")
+```
+
+En aquest cas com p < 0.05 en tots els casos de les parelles de vins per al color podem dir que totes presenten diferències significatives.
+
+Per a fer-ho més genèric, agafarem totes les variables, aplicarem el test, i obtindrem la parella amb el "p valor" més elevat per a cada variable. Així podrem veure en el pitjor dels casos quines variables tenen totes les parelles significatives i quines almenys una no.
 
 ```{r}
 library(dplyr)
-difference <- data.frame(variable=header[-1], max_diff=NA)
+difference <- data.frame(variable=header[-1], max_diff=NA, max_val=NA)
 index <- 1
 for(col in header[-1]){
   print(col)
   test <- pairwise.wilcox.test(wine[[col]], wine$type, p.adjust.method = "holm")
   difference[index, 2] <- max(na.omit(as.numeric(unlist(test$p.value))))
-  #print(pairwise.wilcox.test(wine[[col]], wine$type, p.adjust.method = "holm"))
+  difference[index, 3] <- test[["p.value"]][[1]] + test[["p.value"]][[2]] +
+    test[["p.value"]][[4]]
   index <- index + 1
 }
 
 difference %>% arrange(desc(max_diff))
 ```
 
+2 de les 13 variables presenten almenys en una parella diferències no significatives. Totes les altres 11 presenten diferències significatives, essent flavanoids la que més seguida de phenols i alcohol.
+Per veure el global de les variables amb "p valor" més baix, és a dir, amb la diferència més significativa podem sumar el p-valor de cada variable per parella.
+
+```{r}
+difference %>% arrange(desc(max_val))
+```
+
+Si comparem les dues taules, veurem com les úniques variables que s'han canviat la posició són proanthocyanins i nonflavanoid.
+Aquest nou ordre ens permetrà saber quines són les variables més importants a tenir en compte a l'hora de crear els que ens prediguin el tipus de vi.
 ### Mètodes de classificació no supervisats
 
-Els mètodes de classificació no supervisats són aquells que sense indicar-li a l'algrosime a quin grup pertany cada observació aquests busca agrupar-les segons les similituds entre observacions.
+Els mètodes de classificació no supervisats són aquells que sense indicar-li a l'algorisme a quin grup pertany cada observació aquests busca agrupar-les segons les similituds entre observacions.
 
-És evident que en aquest conjunt de dades disposem d'aquesta informació i que podriem utilitzar directament un model supervisat. Utilitzarem igualment el model no supervisat per veure si realment hi ha diferències significatives entre cada cluster mitjançant dos mètodes diferents: k-means i hierarchical agglomerative clustering.
+És evident que en aquest conjunt de dades disposem d'aquesta informació i que podríem utilitzar directament un model supervisat. Utilitzarem igualment el model no supervisat per veure si realment hi ha diferències significatives entre cada cluster mitjançant dos mètodes diferents: k-means i hierarchical agglomerative clustering.
 
 #### K-means
 
 K-means és el primer algorisme que utilitzarem no supervisat per a la classificació dels vins. El primer pas serà doncs "eliminar" del conjunt de dades la variable que ens diu originalment a quin grup pertanyen.
+
 ```{r message= FALSE, warning=FALSE}
 # Separem les columnes
 wine_types <- wine[, 1]
 wine <- wine[,2:14]
 ```
 
-Seguidament haurem de normalitzar les dades per poder aplicar de manera més eficient l'algorsime. En cas de no normalitzar les dades degut a que les escales de les variables són molt diferents, per aquelles que tinguin un rang més gran l'algorisme li acabaria donant més importància (per exemple la variable "proline").
-
+Seguidament haurem de normalitzar les dades per poder aplicar de manera més eficient l'algorsime. En cas de no normalitzar les dades a causa del fet que les escales de les variables són molt diferents, per aquelles que tinguin un rang més gran l'algorisme li acabaria donant més importància (per exemple la variable "proline").
 
 Utilitzarem una normalització perquè les dades tinguin una mitjana 0 i una desviació estàndard 1.
+
 ```{r message= FALSE, warning=FALSE}
 
 # Method that normalizes a given data
@@ -390,7 +405,7 @@ zWine <- normalize(wine, names(wine))
 
 ```
 
-Tot i que ja sabem el nombre de clústers que originalment tenen les dades (3), al aplicar un algorsime no supervisat no es solen tenir aquest valor. És per això que existeixen diversos mètodes que ens diuen quin és el valor de _k_ més indicat per al conjunt de dades.
+Tot i que ja sabem el nombre de clústers que originalment tenen les dades (3), a l'aplicar un algorisme no supervisat no es solen tenir aquest valor. És per això que existeixen diversos mètodes que ens diuen quin és el valor de _k_ més indicat per al conjunt de dades.
 
 El primer de tots és el __average silhouette__ que mesura la qualitat del clustering determinant per cada observació com d'aprop es troba del seu cluster i com de lluny dels altres. Com més elevat sigui el valor de la silueta, millor serà el nombre de clusters escollits.
 
@@ -469,11 +484,11 @@ calculate_elbow <- function(data_frame, n_clusters, title){
 calculate_elbow(zWine, 10, "Optimal number of clusters using Elbow method")
 ```
 
-Per trobar el valor desitjat del cluster, hem de trobar dintre del gràfic el colze (elbow). Com podem observar del cluster 3 al 10 es forma una línia gairebé constant, i del 3 al 2 presenta una diferència. Per tant és fàcil veure com el colze es troba una altre vegada en el nombre __3__.
+Per trobar el valor desitjat del cluster, hem de trobar dintre del gràfic el colze (elbow). Com podem observar del cluster 3 al 10 es forma una línia gairebé constant, i del 3 al 2 presenta una diferència. Per tant és fàcil veure com el colze es troba una altra vegada en el nombre __3__.
 
 Per tant podem veure com la millor manera d'agrupar les dades és a partir de __3__ clusters diferents, fet ideal per nosaltres que sabem que originalment les dades tenen 3 clusters.
 
-Seguidament anem a utilitzar l'algorimse k-means.
+Seguidament anem a utilitzar l'algorisme k-means.
 
 ```{r message= FALSE, warning=FALSE}
 library(factoextra)
@@ -502,10 +517,9 @@ Els diferents vins queden clarament diferenciats en 3 tipus de vins diferents. �
 get_kmeans_plot(wine, 3, "Cluster for k = 3")
 ```
 
-
 Com es pot veure els grups creats en cas de no normalitzar les dades són molt caòtics.
 
-Finalment, tot i que a simple vista podem veure com en el cas de normalitzar les dades els grups estan ben definits la millor manera de comprovar-ho es contrasant-ho amb la classificació original de les dades.
+Finalment, tot i que a simple vista podem veure com en el cas de normalitzar les dades els grups estan ben definits la millor manera de comprovar-ho és contrastant-ho amb la classificació original de les dades.
 
 ```{r message= FALSE, warning=FALSE}
 # Function that classifies all of the objects of a given dataset by adding
@@ -534,17 +548,45 @@ table(clusters= kmeans3_wine$cluster, original=wine_types)
 ```
 En el 96.63% dels casos, l'algorisme kmeans ha aconseguit classificar correctament els tipus de vins. En aquest cas només 6 valors s'han classificat incorrectament: 3 del grup 1 que eren del grup 3 i 3 del grup 2 que eren del grup 3.
 
+Ara el que podem provar és a crear un model amb menys variables i veure com es comporta. Gràcies al test de Kruskal-Wallis podem triar les variables que estadísticament presenten una major diferència i que per tant ens haurien d'ajudar a crear millors models.
+
+Primer crearem un model amb les 5 millors variables del conjunt segons el resultat obtingut.
+```{r message= FALSE, warning=FALSE}
+
+kmeans3_wine_simple <- get_classification(seed = 6, dataset = zWine[, c(1, 6, 7, 10, 13)], k=3)
+
+# Calculem la probabilitat
+calculate_probability(kmeans3_wine_simple$cluster, wine_types)
+# Mostrem com s'ha classificat
+table(clusters= kmeans3_wine_simple$cluster, original=wine_types)
+```
+
+Com podem veure amb tan sols 5 variables aconseguim una precisió d'un 96.07%, només un 0.56% inferior al creat amb totes les variables.
+
+Ara podem fer el mateix, però per a les dues pitjors.
+```{r message= FALSE, warning=FALSE}
+
+kmeans3_wine_simple <- get_classification(seed = 6, dataset = zWine[, c(2,3)], k=3)
+
+# Calculem la probabilitat
+calculate_probability(kmeans3_wine_simple$cluster, wine_types)
+# Mostrem com s'ha classificat
+table(clusters= kmeans3_wine_simple$cluster, original=wine_types)
+```
+
+Com es pot observar la sel·lecció de les variables és molt important en la creació del model, perquè amb aquestes dos variables que tenen una parella d'atributs que no són estadísticament diferents obtenim un model amb tan sols un 57.86% de precisió.
 
 #### Hierarchical agglomerative clustering
 
-Aquest mètode no supervisat busca crear una jerarquia entre els clusters. Hi ha diverses estratègies per enfocar-ho, i en aquest cas ens centrarem en utilitzar la agglomerativa que té un enfocament _bottom_up_ on cada observació pertany inicialment al seu propi cluster, i per parelles es van ajuntant en el mateix cluster i formant una jerarquia cap amunt. La gràcia està en el mètode és la selecció de la mètrica per calcular la distància entre observacions i el criteri escollit per juntar aquestes parelles de clusters ( _linkage criteria_ ).
+Aquest mètode no supervisat busca crear una jerarquia entre els clusters. Hi ha diverses estratègies per enfocar-ho, i en aquest cas ens centrarem a utilitzar l'agglomerativa que té un enfocament _bottom_up_ on cada observació pertany inicialment al seu propi cluster, i per parelles es van ajuntant en el mateix cluster i formant una jerarquia cap amunt. La gràcia està en el mètode és la selecció de la mètrica per calcular la distància entre observacions i el criteri escollit per juntar aquestes parelles de clusters ( _linkage criteria_ ).
 
 Aquest mètode no supervisat, a diferència de k-means no necessita doncs en cap moment el nombre de clusters perquè comença amb tants clusters com observacions i acaben totes en un sol cluster.
 
 Anem doncs a aplicar l'algorisme.
+
 ```{r message= FALSE, warning=FALSE}
 hierarchical_agglomerative_clustering <- function(data, distance_method, linkage_criteria){
-  hclust(dist(zWine, method=distance_method), method=linkage_criteria)
+  hclust(dist(data, method=distance_method), method=linkage_criteria)
 }
 
 hac <- hierarchical_agglomerative_clustering(zWine, "manhattan", "ward.D2")
@@ -552,7 +594,7 @@ plot(hac)
 ```
 
 
-Com es pot veure en el dendograma no tenim cap dubte que les dades s'agrupen en 3 clusters ben diferenciats entre si, perquè a l'altura 30 ja tenim els 3 clusters diferenciats i no és fins a l'altura 90 que dos d'aquests s'ajunten.
+Com es pot veure en el dendrograma no tenim cap dubte que les dades s'agrupen en 3 clusters ben diferenciats entre si, perquè a l'altura 30 ja tenim els 3 clusters diferenciats i no és fins a l'altura 90 que dos d'aquests s'ajunten.
 
 Igual que en el cas anterior anem a veure com de "bé" ho ha fet l'algorisme.
 
@@ -563,11 +605,12 @@ calculate_probability(cutree(hac, 3), wine_types)
 
 En aquest cas l'algorisme aconsegueix una classificació correcta del 94.94% de les observacions.
 
+
 ### Mètodes de classificació supervisats
 
 En els mètodes de classificació supervisats és molt important dividir els conjunts de dades en dos grups: __train i test__. Aquest fet ens permetrà posar a prova el nostre model creat i podrem jugar per evitar per exemple fer _overfitting_ en aquest.
 
-Separarem el dataset 70/30 entre train i test i aplicarem l'algorisme. Primer de tot definim la funció que ens facili la feina.
+Separarem el dataset 70/30 entre train i test i aplicarem l'algorisme. Primer de tot definim la funció que ens faci la feina.
 
 ```{r message= FALSE, warning=FALSE}
 library(class)
@@ -608,7 +651,7 @@ create_sample <- function(dataset, types, train_prop, seed){
 }
 ```
 
-Seguidament aplicarem l'algorisme, però hem de decidir el valor de k. Per a decidir-lo, probarem quin s'adapta millor.
+Seguidament aplicarem l'algorisme, però hem de decidir el valor de k. Per a decidir-lo, provarem quin s'adapta millor.
 ```{r message= FALSE, warning=FALSE}
 get_knn <- function(dataset, types, train_prop, k){
   # Cridem a l'algorisme
@@ -661,8 +704,9 @@ wine.modelC50 <- C5.0(wine.sample@train_sample, wine.sample@train_type)
 plot(wine.modelC50)
 ```
 
-Com es pot veure en l'arbre de decisisó obtingut els vins de tipus 1 són aquells en que el valor de "flavanoids" és superior a 1.57, el valor de "proline" és superior a "750" i el valor de "color" superior a 3.4. En canvi, els vins de tipus 3 són aquells amb el valor de "flavanoids" inferior o igual a 1.57 i amb "color" superior a 3.8. Pel que fa al grup 2, en aquest arbre està més repartit pels diferents nodes (en un total de 3) tot i que el grup principal és aquell amb "flavanoids" superior a 1.57 i "proline" inferior o igual a 750. Les altres dues fulles de l'arbre que contenen observacions del grup 2 una només en té 2 i l'altre 8.
+Com es pot veure en l'arbre de decisió obtingut els vins de tipus 1 són aquells en què el valor de "flavanoids" és superior a 1.57, el valor de "proline" és superior a "750" i el valor de "color" superior a 3.4. En canvi, els vins de tipus 3 són aquells amb el valor de "flavanoids" inferior o igual a 1.57 i amb "color" superior a 3.8. Pel que fa al grup 2, en aquest arbre està més repartit pels diferents nodes (en un total de 3) tot i que el grup principal és aquell amb "flavanoids" superior a 1.57 i "proline" inferior o igual a 750. Les altres dues fulles de l'arbre que contenen observacions del grup 2 una només en té 2 i l'altre 8.
 
+En aquest cas, si ens fixem amb les variables que s'han utilitzat per a la creació de l'arbre veiem com apareixen 3 de les 5 variables que apareixen en aquest són les que hem vist que eren les que presentaven diferències més significatives entre els tipus de vins i amb la qual hem pogut crear un model molt més simple amb l'algorisme k-means. En cas d'utilitzar-lo aquí, veuríem com l'arbre de decisió creat és el mateix.
 
 Com en els casos anteriors anem a veure com de "bo" és el model creat per a la predicció dels tipus de vins.
 
@@ -677,7 +721,7 @@ En aquest cas l'algorisme ha aconseguit un resultat molt bo amb una precisió de
 
 # Exportació de les dades
 
-Finalment escriurem les dades que tenim en el dataset en un fitxer CSV. Hi afegirem els valors obtinguts de cada algorsimes de classificació juntament amb la classificació original en els casos dels algorismes no supervisats.
+Finalment escriurem les dades que tenim en el dataset en un fitxer CSV. Hi afegirem els valors obtinguts de cada algorismes de classificació juntament amb la classificació original en els casos dels algorismes no supervisats.
 
 ```{r}
 # Afegim els tipus
@@ -691,21 +735,23 @@ write.csv(wine, "../data/wine_out.csv")
 
 # Conclusions
 
-En aquesta segona pràctica hem pogut treballar la càrrega, neteja i anàlisi de les dades en aquest per al conjunt de dades __Wine Dataset__. 
+En aquesta segona pràctica hem pogut treballar la càrrega, neteja i anàlisi de les dades en aquest per al conjunt de dades __Wine Dataset__.
 
 Hem vist com el conjunt de dades no presentava zeros o elements buits, però si alguns valors extrems (outliers) que hem decidit mantenir perquè en cap cas es tractaven de valors erronis, i es podien donar perfectament durant l'anàlisi químic dels components del vi.
 
-Tanmateix, hem realitzat un anàlisi estadístic de la normalitat i homoscedasticitat de les dades, on hem vist resultats controvertits depenent de la prova estadística escollida. Tot i això hem vist com la majoria de les dades seguien una distribució normal i en cap cas homoscedàstica, fet que ens ha permés intuïr que les dades es podrien classificar fàcilment.
+Tanmateix, hem realitzat una anàlisi estadístic de la normalitat i homoscedasticitat de les dades, on hem vist resultats controvertits depenent de la prova estadística escollida. Tot i això hem vist com la majoria de les dades seguien una distribució normal i en cap cas homoscedàstica, fet que ens ha permès intuir que les dades es podrien classificar fàcilment.
 
-Pel que fa a l'anàlisi de les dades primer s'ha realitzat una estudi de la correlació de les variables i després s'han aplicat algorsimes no supervisats i supervisats per a la classificació de les dades.
+Pel que fa a l'anàlisi de les dades primer s'ha realitzat un estudi de la correlació de les variables i després s'han aplicat algorismes no supervisats i supervisats per a la classificació de les dades.
 
 En l'estudi de la correlació hem vist com hi havien algunes variables molt positivament correlacionades i que a més al visualitzar-les permetien diferenciar molt clarament els diferents tipus de vins.
 
-En el cas dels algorismes n'hem aplicat un total de cuatre: dos de no supervisats (k-means i hierarchical agglomerative clustering) i dos de supervisats (arbres de classificació i Knn). Cal mencionar que tots han obtingut un molt bon resultat amb precisions no inferiors al 94.94%. L'algorsime que millor ha funcionat és el supervisat __Knn__ que ha obtingut un 98.15% d'acerts, seguit del k-means amb un 96.29%, els arbres de decisió amb un 96.29% i el hierarchical agglomerative clustering amb un 94.94%.
+En el cas dels algorismes n'hem aplicat un total de quatre: dos de no supervisats (k-means i hierarchical agglomerative clustering) i dos de supervisats (arbres de classificació i Knn). Cal mencionar que tots han obtingut un molt bon resultat amb precisions no inferiors al 94.94%. L'algorisme que millor ha funcionat és el supervisat __Knn__ que ha obtingut un 98.15% d'encerts, seguit del k-means amb un 96.29%, els arbres de decisió amb un 96.29% i el hierarchical agglomerative clustering amb un 94.94%.
 
 Cal dir però que tot i que Knn aconsegueix el major _ratio_ d'acerts, aquests és nomes un 3% superior al que ha obtingut pitjor resultat. La gràcia és que tots els altres algorismes ens permeten extreure informació valuosa i d'una manera sencilla com poden ser els arbres de decisió amb les variables clau que separen els diferents grups, o la qualitat de la separació d'aquests grups amb hierarchical agglomerative clustering o k-means.
 
-Finalment destacar la potència dels algorismes no supervisats que sense saber prèviament els grups aconsegueix una classificació excel·lent. A més tot i que  hierarchical agglomerative clustering té el "pitjor" ratio dels cuatre algorismes aquest l'aconsegueix sense ni tan sols haver d'especificar el nombre de clusters presents en el conjunt de dades.
+Destacar la potència dels algorismes no supervisats que sense saber prèviament els grups aconsegueix una classificació excel·lent. A més tot i que hierarchical agglomerative clustering té el "pitjor" ratio dels cuatre algorismes aquest l'aconsegueix sense ni tan sols haver d'especificar el nombre de clusters presents en el conjunt de dades.
+
+Finalment destacar com amb només 5 variables, per exemple en el cas de l'algorisme k-means hem pgout crear un model igual de vàlid, i que aquestes variables s'han vist encra més reforçades al veure-les aparèixer a l'arbre de classificació sense previament haver-ho especificat.
 
 
 
